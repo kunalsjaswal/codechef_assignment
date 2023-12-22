@@ -1,62 +1,100 @@
-import React from 'react'
-import worldCupImage from '../../images/worldcup.png'
-import icon1 from '../../images/icon.png'
-import PostsDiv from './PsotPageStyle'
+import React, { useState, useContext, useEffect } from 'react'
+import {PostsDiv} from './PsotPageStyle'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import DeleteIcon from '@mui/icons-material/Delete';
 import MessageIcon from '@mui/icons-material/Message';
+import contextStore from '../../context/ContextFile';
+import ShowComments from '../comments/ShowComments';
+import { useNavigate } from 'react-router-dom';
 
 
-const blogs = [
-  {
-    username: "harry",
-    caption:"India losses World Cup 2023 Final.. ",
-    icon:icon1,
-    blog:worldCupImage
-  },
-  {
-    username: "harry",
-    caption:"India losses World Cup 2023 Final.. ",
-    icon:icon1,
-    blog:worldCupImage
-  },
-  {
-    username: "harry",
-    caption:"India losses World Cup 2023 Final.. ",
-    icon:icon1,
-    blog:worldCupImage
-  }
-]
+
 const PostPage = () => {
+  
+  // hooks and all
+  
+  const {blogs, fetchComments, commentBox, setCommentBox,setAlertInfo} = useContext(contextStore)
+  
+  
+   // states
+  const [comment, setComment] = useState("")
+
+  // handlers
+  const onPostHandler=async(id)=>{
+      if(comment.length == 0) return
+
+      const response = await fetch("http://localhost/apis/codechef_api/requests/add_comment.php",{
+          method:"POST",
+          headers:{
+              "Content-Type":"application/json"
+          },
+          body: JSON.stringify({
+            post_id:id,
+            user_id: localStorage.getItem('token'),
+            user_name: localStorage.getItem('username'),
+            comment:comment[id],
+            level:0,
+            ref_id:-1
+        })
+      })
+      const json = await response.json()
+      setAlertInfo({
+          status: true,
+          color: json['status']?"green":"red",
+          message: json['message']
+      })
+      if(json['status']){
+        fetchComments()
+        document.getElementById(`comment-input-${id}`).value = ""
+        setComment("")
+      }
+      
+  }
+  const showCommentHandler=(_id)=>{
+      setCommentBox({status: true, id: _id})
+  }
+  const onChangeHandler = (ev)=>{
+      let name = ev.target.name 
+      setComment({[name]:ev.target.value})
+  }
+  // return statement
   return (
     <PostsDiv>
+        {
+          commentBox.status && 
+          <ShowComments/>
+        }
       {blogs.map((val,key)=>(
-        <div className="post">
+        <div className="post" key={key}>
           <div className="head">
               <img src={val.icon} alt="profile icon" />
               <h2>{val.username}</h2>
           </div>
 
           <div className="body">
-            <img src={val.blog} alt="blog" />
+            <img src={val.image} alt="blog" />
           </div>
 
           <div className="footer">
             <div className="icons-tray">
               <div className="like-icon">
                 <FavoriteBorderIcon fontSize='large' className='like-btn'/> 
-                 86
+                  {val.likes}
               </div>
               <div className="cmt-icon">
-                <MessageIcon style={{cursor:"pointer"}} fontSize='large'/>
-                 15
+                <MessageIcon onClick={()=>showCommentHandler(key)} style={{cursor:"pointer"}} fontSize='large'/>
               </div>
             </div>
 
             <div className='caption'>{val.caption}</div>
              
-            <input type="text" disabled className="comment" placeholder='add your comment..'/>
+             {  
+                localStorage.getItem('token')  && 
+                <>
+                  <input type="text" id={`comment-input-${key}`} name = {key} required onChange={onChangeHandler} className="comment" placeholder='add your comment..'/> 
+                  <button className='post-btn' onClick = {()=>onPostHandler(key)}>POST</button>
+                </>
+             
+             }
           </div>
         </div>
       ))}

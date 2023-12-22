@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const PostsDiv = styled.div`
+export const PostsDiv = styled.div`
     width: 70%;
     margin: auto;
     margin-top: 5%;
@@ -22,9 +22,6 @@ const PostsDiv = styled.div`
             img{ 
                 width: 100%;
                 border-radius:20px;
-            }
-            .caption{
-                margin-top: 2%;
             }
         }
         .footer{
@@ -53,17 +50,27 @@ const PostsDiv = styled.div`
             .caption{
                 margin-top: 2%;
                 margin-left: .5%;
+                color: #dadada;
             }
             .comment{
-                width: 100%;
+                width: 85%;
+                color: white;
                 padding: 1%;
                 font-size: 105%;
                 margin-top: 2%;
                 border: 1px inset #9c9c9c;
+            }
+            .post-btn{
+                color: white;
+                font-size: 105%;
+                margin-left: 2%;
+                border: 1px solid white;
+                border-radius: 5px;
+                padding:1% 2%;
+                cursor: pointer;
             }
         }
     }
 
 `
 
-export default PostsDiv
