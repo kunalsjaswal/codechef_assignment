@@ -13,7 +13,7 @@ function App() {
   const {fetchComments} = useContext(contextStore)
   useEffect(()=>{
     fetchComments()
-
+    
   },[])
   // return statement
   return (

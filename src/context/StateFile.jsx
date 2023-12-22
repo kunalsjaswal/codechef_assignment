@@ -53,7 +53,6 @@ const StateFile = (props)=>{
             likes:54
         }
     ]
-
     const [alertInfo, setAlertInfo] = useState({
         status: false,
         color:"transparent",
@@ -63,9 +62,11 @@ const StateFile = (props)=>{
     const [commentBox, setCommentBox] = useState(
         {status:false,
          id: 0
-        })
+    })
+    
     const [commentData, setCommentData] = useState([])
-    const [topLevelComments, setTopLevelComments] = useState([])
+     // getting total comments over each post
+    const [postCount, setPostCount] = useState({0:0,1:0,2:0,3:0,4:0})
     const fetchComments = async()=>{
 
         const response = await fetch("http://localhost/apis/codechef_api/requests/fetch_comments.php",{
@@ -78,17 +79,16 @@ const StateFile = (props)=>{
         setCommentData(json.content)
     }
 
+    // top level / root comments 
+    const [topLevelComments, setTopLevelComments] = useState([])
     const filterTopLevel=()=>{
         setTopLevelComments(
             commentData.filter(val=>{return (val.post_id == commentBox.id && val.level == 0)})
         )
     }
-    const [levelComments, setLevelComments] = useState({
-        1:[],
-        2:[],
-        3:[],
-        4:[]
-    })
+
+    // nested comments
+    const [levelComments, setLevelComments] = useState({1:[],2:[],3:[],4:[],5:[]})
     const filterGivenLevel=()=>{
         setLevelComments({
             1: commentData.filter(val=>{return (val.post_id == commentBox.id && val.level == 1)}),
@@ -113,6 +113,7 @@ const StateFile = (props)=>{
                 filterTopLevel, topLevelComments,
                 editInfo, setEditInfo,
                 filterGivenLevel, levelComments,
+                postCount, setPostCount
             }}
         >
         {props.children}

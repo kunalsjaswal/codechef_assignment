@@ -15,7 +15,7 @@ const SignupPage = () => {
 
   const onSubmitHandler = async(event)=>{
       event.preventDefault()
-      const response = await fetch('http://13.211.240.113/apis/codechef_api/requests/add_user.php', {
+      const response = await fetch('http://localhost/apis/codechef_api/requests/add_user.php', {
         method:"POST",
         headers:{
             "Content-Type":"application/json",

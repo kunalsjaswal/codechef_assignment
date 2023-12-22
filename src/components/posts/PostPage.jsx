@@ -11,9 +11,14 @@ import { useNavigate } from 'react-router-dom';
 const PostPage = () => {
   
   // hooks and all
-  
-  const {blogs, fetchComments, commentBox, setCommentBox,setAlertInfo} = useContext(contextStore)
-  
+  const {blogs, fetchComments,commentData, commentBox, setCommentBox,setAlertInfo, postCount, setPostCount} = useContext(contextStore)
+  useEffect(()=>{
+    setPostCount({0:0,1:0,2:0,3:0,4:0})
+    commentData.map((val)=>{
+      setPostCount(prev=>({...prev, [val.post_id]: prev[val.post_id]+1}))
+    })
+    // console.log(postCount)
+  },[commentData])
   
    // states
   const [comment, setComment] = useState("")
@@ -82,6 +87,7 @@ const PostPage = () => {
               </div>
               <div className="cmt-icon">
                 <MessageIcon onClick={()=>showCommentHandler(key)} style={{cursor:"pointer"}} fontSize='large'/>
+                {postCount[key]}
               </div>
             </div>
 
