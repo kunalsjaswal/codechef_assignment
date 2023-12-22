@@ -27,7 +27,7 @@ const PostPage = () => {
   const onPostHandler=async(id)=>{
       if(comment.length == 0) return
 
-      const response = await fetch("http://localhost/apis/codechef_api/requests/add_comment.php",{
+      const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/add_comment.php",{
           method:"POST",
           headers:{
               "Content-Type":"application/json"

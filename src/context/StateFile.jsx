@@ -69,7 +69,7 @@ const StateFile = (props)=>{
     const [postCount, setPostCount] = useState({0:0,1:0,2:0,3:0,4:0})
     const fetchComments = async()=>{
 
-        const response = await fetch("http://localhost/apis/codechef_api/requests/fetch_comments.php",{
+        const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/fetch_comments.php",{
             method:"GET",
             headers:{
                 "Content-Type":'application/json'

@@ -15,7 +15,7 @@ const EditComment = () => {
     }
 
     const onEditCLickHandler =async()=>{
-        const response = await fetch('http://localhost/apis/codechef_api/requests/edit_comment.php',{
+        const response = await fetch('http://13.211.139.220/apis/codechef_api/requests/edit_comment.php',{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"

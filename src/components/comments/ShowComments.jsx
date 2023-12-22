@@ -38,7 +38,7 @@ const ShowComments = () => {
      
    }
    const likePost=async(id, likes, flag)=>{
-     const response = await fetch("http://localhost/apis/codechef_api/requests/like_comment.php",{
+     const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/like_comment.php",{
          method:"PUT",
          headers:{
            "Content-Type":"application/json"
@@ -55,7 +55,7 @@ const ShowComments = () => {
      dislikePost(id, dislikes, add)
    }
    const dislikePost = async(id, dislikes, flag)=>{
-     const response = await fetch("http://localhost/apis/codechef_api/requests/dislike_comment.php",{
+     const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/dislike_comment.php",{
          method:"PUT",
          headers:{
            "Content-Type":"application/json"
@@ -68,7 +68,7 @@ const ShowComments = () => {
    
    // deleting the comment
    const onDeleteClickHandler=async(id)=>{
-       const response = await fetch('http://localhost/apis/codechef_api/requests/delete_comment.php',{
+       const response = await fetch('http://13.211.139.220/apis/codechef_api/requests/delete_comment.php',{
            method:"DELETE",
            headers:{
              "Content-Type":"application/json"
@@ -83,11 +83,11 @@ const ShowComments = () => {
    const [text, setText] = useState("")
    const conditionOf5mint = (created_at) =>{
      let prev_date = new Date(created_at)
-     let curr_date = new Date()
+     let curr_date = new Date();
+
      let milisec = curr_date.getTime() - prev_date.getTime()
      
      let min = milisec / 60000
- 
      return (min <= 5)
    }
    const onEditHandler=(id, comment ,created_at)=>{
@@ -108,7 +108,7 @@ const ShowComments = () => {
  
    }
    const onEditCLickHandler =async()=>{
-       const response = await fetch('http://localhost/apis/codechef_api/requests/edit_comment.php',{
+       const response = await fetch('http://13.211.139.220/apis/codechef_api/requests/edit_comment.php',{
            method:"PUT",
            headers:{
                "Content-Type":"application/json"
@@ -144,7 +144,7 @@ const ShowComments = () => {
    const onReplyHandler=async(post_id, ref_id, replies, total_replies)=>{
      if(replyText.length == 0) return
      
-     const response = await fetch("http://localhost/apis/codechef_api/requests/add_reply.php",{
+     const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/add_reply.php",{
          method:"POST",
          headers:{
              "Content-Type":"application/json"
@@ -231,7 +231,7 @@ const ShowComments = () => {
                           </div>
 
                           {
-                          localStorage.getItem('token') &&  val.status == 1 && 
+                          localStorage.getItem('token')  && val.status == 1 &&
 
                           <div className="footer">
                               { 
@@ -249,7 +249,7 @@ const ShowComments = () => {
                               }
                               {val.dislikes}
                               {
-                              localStorage.getItem('token') === val.user_id  && 
+                                  localStorage.getItem('token') == val.user_id  && 
                               <>
                                   <DeleteOutlineIcon onClick={()=>onDeleteClickHandler(val.id)} fontSize='small' className='dlt-btn'/>
                                   <span style={{cursor:"pointer"}} onClick={()=>onEditHandler(val.id, val.comment, val.created_at)}>edit</span>
