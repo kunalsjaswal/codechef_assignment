@@ -63,13 +63,13 @@ const StateFile = (props)=>{
         {status:false,
          id: 0
     })
-    
+    const api = "13.211.139.220"
     const [commentData, setCommentData] = useState([])
      // getting total comments over each post
     const [postCount, setPostCount] = useState({0:0,1:0,2:0,3:0,4:0})
     const fetchComments = async()=>{
 
-        const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/fetch_comments.php",{
+        const response = await fetch(`http://${api}/apis/codechef_api/requests/fetch_comments.php`,{
             method:"GET",
             headers:{
                 "Content-Type":'application/json'
@@ -113,7 +113,7 @@ const StateFile = (props)=>{
                 filterTopLevel, topLevelComments,
                 editInfo, setEditInfo,
                 filterGivenLevel, levelComments,
-                postCount, setPostCount
+                postCount, setPostCount, api
             }}
         >
         {props.children}

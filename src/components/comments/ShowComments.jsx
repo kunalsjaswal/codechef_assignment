@@ -10,13 +10,13 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'; 
-import EditComment from './EditComment';
 import ShowReplies from '../reply/ShowReplies';
 
+
 const ShowComments = () => {
-  
   // hooks and all
-  const {setCommentBox, filterGivenLevel, commentData,fetchComments,commentBox, blogs, filterTopLevel, topLevelComments, editInfo, setEditInfo} = useContext(contextStore)
+
+  const {setCommentBox, filterGivenLevel, commentData,fetchComments,commentBox, blogs, filterTopLevel, topLevelComments, editInfo, setEditInfo, api} = useContext(contextStore)
   
   useEffect(()=>{
     filterTopLevel()
@@ -38,7 +38,7 @@ const ShowComments = () => {
      
    }
    const likePost=async(id, likes, flag)=>{
-     const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/like_comment.php",{
+     const response = await fetch(`http://${api}/apis/codechef_api/requests/like_comment.php`,{
          method:"PUT",
          headers:{
            "Content-Type":"application/json"
@@ -55,7 +55,7 @@ const ShowComments = () => {
      dislikePost(id, dislikes, add)
    }
    const dislikePost = async(id, dislikes, flag)=>{
-     const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/dislike_comment.php",{
+     const response = await fetch(`http://${api}/apis/codechef_api/requests/dislike_comment.php`,{
          method:"PUT",
          headers:{
            "Content-Type":"application/json"
@@ -68,7 +68,7 @@ const ShowComments = () => {
    
    // deleting the comment
    const onDeleteClickHandler=async(id)=>{
-       const response = await fetch('http://13.211.139.220/apis/codechef_api/requests/delete_comment.php',{
+       const response = await fetch(`http://${api}/apis/codechef_api/requests/delete_comment.php`,{
            method:"DELETE",
            headers:{
              "Content-Type":"application/json"
@@ -81,16 +81,26 @@ const ShowComments = () => {
    
    // Editing comment if time of creation is < 5
    const [text, setText] = useState("")
-   const conditionOf5mint = (created_at) =>{
-     let prev_date = new Date(created_at)
-     let curr_date = new Date();
+   const conditionOf5mint = async(created_at) =>{
 
-     let milisec = curr_date.getTime() - prev_date.getTime()
+    const response = await fetch(`http://${api}/apis/codechef_api/requests/date_issue_api.php`, {
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+      }
+    })
+    const json = await response.json();
+
+    let prev_date = new Date(created_at)
+    let curr_date = new Date(json['created_at'])
      
-     let min = milisec / 60000
-     return (min <= 5)
+    let milisec = curr_date.getTime() - prev_date.getTime()
+    
+    let min = milisec / 60000
+    console.log(min)
+    return (min <= 5)
    }
-   const onEditHandler=(id, comment ,created_at)=>{
+   const onEditHandler=async(id, comment ,created_at)=>{
        let condition = conditionOf5mint(created_at)
  
        if(condition){
@@ -108,7 +118,7 @@ const ShowComments = () => {
  
    }
    const onEditCLickHandler =async()=>{
-       const response = await fetch('http://13.211.139.220/apis/codechef_api/requests/edit_comment.php',{
+       const response = await fetch(`http://${api}/apis/codechef_api/requests/edit_comment.php`,{
            method:"PUT",
            headers:{
                "Content-Type":"application/json"
@@ -144,7 +154,7 @@ const ShowComments = () => {
    const onReplyHandler=async(post_id, ref_id, replies, total_replies)=>{
      if(replyText.length == 0) return
      
-     const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/add_reply.php",{
+     const response = await fetch(`http://${api}/apis/codechef_api/requests/add_reply.php`,{
          method:"POST",
          headers:{
              "Content-Type":"application/json"

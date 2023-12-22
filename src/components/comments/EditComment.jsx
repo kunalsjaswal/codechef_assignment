@@ -5,7 +5,7 @@ import contextStore from '../../context/ContextFile';
 
 const EditComment = () => {
 
-    const {editInfo, setEditInfo, fetchComments} = useContext(contextStore)
+    const {editInfo, setEditInfo, fetchComments, api} = useContext(contextStore)
     const [text, setText] = useState(editInfo.comment)
     const onClossClickHandler=()=>{
         setEditInfo({
@@ -15,7 +15,7 @@ const EditComment = () => {
     }
 
     const onEditCLickHandler =async()=>{
-        const response = await fetch('http://13.211.139.220/apis/codechef_api/requests/edit_comment.php',{
+        const response = await fetch(`http://${api}/apis/codechef_api/requests/edit_comment.php`,{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"

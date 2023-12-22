@@ -7,6 +7,8 @@ import SignupPage from "./components/signup/SignupPage";
 import { useContext, useEffect } from "react";
 import contextStore from "./context/ContextFile";
 import ExperimentPage from "./components/others/ExperimentPage";
+process.env.TZ = 'America/New_York';
+
 function App() {
 
     

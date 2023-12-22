@@ -5,13 +5,14 @@ import MessageIcon from '@mui/icons-material/Message';
 import contextStore from '../../context/ContextFile';
 import ShowComments from '../comments/ShowComments';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 
 
 const PostPage = () => {
   
   // hooks and all
-  const {blogs, fetchComments,commentData, commentBox, setCommentBox,setAlertInfo, postCount, setPostCount} = useContext(contextStore)
+  const {blogs, fetchComments,commentData,api, commentBox, setCommentBox,setAlertInfo, postCount, setPostCount} = useContext(contextStore)
   useEffect(()=>{
     setPostCount({0:0,1:0,2:0,3:0,4:0})
     commentData.map((val)=>{
@@ -26,8 +27,8 @@ const PostPage = () => {
   // handlers
   const onPostHandler=async(id)=>{
       if(comment.length == 0) return
-
-      const response = await fetch("http://13.211.139.220/apis/codechef_api/requests/add_comment.php",{
+     
+      const response = await fetch(`http://${api}/apis/codechef_api/requests/add_comment.php`,{
           method:"POST",
           headers:{
               "Content-Type":"application/json"
@@ -38,7 +39,7 @@ const PostPage = () => {
             user_name: localStorage.getItem('username'),
             comment:comment[id],
             level:0,
-            ref_id:-1
+            ref_id:-1,
         })
       })
       const json = await response.json()
