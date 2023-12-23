@@ -73,29 +73,25 @@ const ShowReplies = ({ref_id, level, rootReplies}) => {
   
   // Editing comment if time of creation is < 5
   const [text, setText] = useState("")
-  const conditionOf5mint = async(created_at) =>{
+  
+  const onEditHandler=async(id, comment ,created_at)=>{
+      const response = await fetch(`http://${api}/apis/codechef_api/requests/date_issue_api.php`, {
+        method:"GET",
+        headers:{
+          "Content-Type":"application/json",
+        }
+      })
+      const json = await response.json();
 
-    const response = await fetch(`http://${api}/apis/codechef_api/requests/date_issue_api.php`, {
-      method:"GET",
-      headers:{
-        "Content-Type":"application/json",
-      }
-    })
-    const json = await response.json();
+      let prev_date = new Date(created_at)
+      let curr_date = new Date(json['created_at'])
+      
+      let milisec = curr_date.getTime() - prev_date.getTime()
+      
 
-    let prev_date = new Date(created_at)
-    let curr_date = new Date(json['created_at'])
-     
-    let milisec = curr_date.getTime() - prev_date.getTime()
-    
-    let min = milisec / 60000
-    console.log(min)
-    return (min <= 5)
-   }
-  const onEditHandler=(id, comment ,created_at)=>{
-      let condition = conditionOf5mint(created_at)
+      let min = milisec / 60000 
 
-      if(condition){
+      if(min <= 5){
           setText(comment)
           document.getElementById(`edit-${id}`).style.display="block"
           setEditInfo({
